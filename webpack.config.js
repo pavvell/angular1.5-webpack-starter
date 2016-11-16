@@ -7,28 +7,30 @@ var webpack = require('webpack'),
     sassLintPlugin = require('sasslint-webpack-plugin'),
     path = require('path'),
     node_modules_dir = path.resolve(__dirname, './node_modules'),
-    bower_modules_dir = path.resolve(__dirname, './bower_components'),
     dist_path = path.resolve(__dirname, './frontend/build'),
     src_path = path.resolve(__dirname, './frontend/src'),
     NODE_ENV = process.env.NODE_ENV || 'production';
 
 var config = {
-    context: src_path,
-    entry: {
-        project: [
-            './js/app.js',
-            './scss/styles.scss'
-        ],
-    },
-    output: {
-        path: dist_path,
-        filename: 'js/[name].bundle.js',
-        chunkFilename: 'js/[id].bundle.js'
-    },
-    externals: {
-        angular: 'angular',
-    },
-    module: {
+  context: src_path,
+  entry: {
+    project: [
+      './js/app.js',
+      './scss/styles.scss'
+    ],
+    vendor: [
+      path.resolve(node_modules_dir, 'angular/angular.min.js'),
+    ]
+  },
+  output: {
+    path: dist_path,
+    filename: 'js/[name].bundle.js',
+    chunkFilename: 'js/[id].bundle.js'
+  },
+  externals: {
+    angular: 'angular',
+  },
+  module: {
         preLoaders: [
             {
                 test: /\.js$/,
@@ -69,35 +71,36 @@ var config = {
             },
         ],
     },
-    plugins: [
-        new ExtractTextPlugin('css/[name].css'),
-        new webpack.DefinePlugin({
-            NODE_ENV: JSON.stringify(NODE_ENV)
-        }),
+  plugins: [
+      new ExtractTextPlugin('css/[name].css'),
+      new webpack.DefinePlugin({
+        NODE_ENV: JSON.stringify(NODE_ENV)
+      }),
     ],
-    postcss: function () {
-        return [precss, autoprefixer];
+  postcss: function () {
+      return [precss, autoprefixer];
     },
-    resolve: {
-        root: [node_modules_dir, bower_modules_dir],
+  resolve: {
+      root: [node_modules_dir],
     },
-    resolveLoader: {root: [node_modules_dir, bower_modules_dir]}
+  resolveLoader: {root: [node_modules_dir]}
 };
 
 if (NODE_ENV === 'production') {
-    // with that option turned on, do not remove '-minimize' from css loader, cause UglifyJsPlugin
-    // affects css as well, at least in its current version
-    // https://github.com/webpack/webpack/issues/2543
-    // https://github.com/postcss/autoprefixer/issues/660
-    config.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-                drop_console: true,
-                unsafe: true
-            }
-        })
-    )
+  // with that option turned on, do not remove '-minimize' from css loader, cause UglifyJsPlugin
+  // affects css as well, at least in its current version
+  // https://github.com/webpack/webpack/issues/2543
+  // https://github.com/postcss/autoprefixer/issues/660
+  config.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        unsafe: true
+      },
+      sourceMap: false
+    })
+  )
 }
 
 module.exports = config;

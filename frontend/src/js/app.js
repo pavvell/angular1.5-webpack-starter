@@ -15,7 +15,12 @@ import localStorageProvider from './providers/localStorage';
 
 import appComponent from './components/app/app';
 
-angular.module('starterApp', [])
+angular.module('starterApp', [
+    'ngSanitize',
+    'ui.router',
+    'ngAnimate',
+    'ngCookies',
+])
 
   .config(config)
   .run(run)
