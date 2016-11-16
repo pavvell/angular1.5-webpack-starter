@@ -1,0 +1,6 @@
+{
+  "maxErrors": 500,
+  "disallowTrailingWhitespace": false,
+  "maximumLineLength": 100,
+  "validateIndentation": false
+}
