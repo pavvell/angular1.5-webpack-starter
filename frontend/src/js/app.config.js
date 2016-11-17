@@ -20,7 +20,7 @@ export default function config(
 
   $stateProvider.state('homepage', {
     url: '/',
-    template: '<app-component start="1"></app-component>',
+    template: '<app-component></app-component>',
     controller: () => {},
   });
 }

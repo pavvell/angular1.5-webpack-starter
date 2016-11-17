@@ -25,64 +25,65 @@ var config = {
   output: {
     path: dist_path,
     filename: 'js/[name].bundle.js',
-    chunkFilename: 'js/[id].bundle.js'
+    chunkFilename: 'js/[id].bundle.js',
+    publicPath: 'http://localhost:3001/assets/'
   },
   externals: {
     angular: 'angular',
   },
   module: {
-        preLoaders: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: "eslint-loader"
-            },
-        ],
-        loaders: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                query: { presets: [require.resolve('babel-preset-es2015')]}
-            },
-            {
-                test: /\.s?css$/,
-                loader: ExtractTextPlugin.extract('style', 'css?-minimize!postcss!resolve-url!sass?sourceMap&includePaths[]=' + path.resolve(__dirname, './node_modules/compass-mixins/lib'), {publicPath: '../'})
-            },
-            {
-                test: /\.(jpe?g|png|gif|svg)$/i,
-                loader: 'url?limit=10000&name=images/[name].[ext]',
-            },
-            {
-                test: /\.(otf)$/i,
-                loader: 'url?limit=10000&name=fonts/[name].[ext]',
-            },
-            {
-                test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'url-loader?limit=10000&minetype=application/font-woff',
-            },
-            {
-                test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-                loader: 'file-loader',
-            },
-            {
-                test: /\.s?html$/,
-                loader: "ngtemplate?relativeTo=" + src_path + "/!html",
-            },
-        ],
-    },
-  plugins: [
-      new ExtractTextPlugin('css/[name].css'),
-      new webpack.DefinePlugin({
-        NODE_ENV: JSON.stringify(NODE_ENV)
-      }),
+    preLoaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader"
+      },
     ],
+    loaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        query: { presets: [require.resolve('babel-preset-es2015')]}
+      },
+      {
+        test: /\.s?css$/,
+        loader: ExtractTextPlugin.extract('style', 'css?-minimize!postcss!resolve-url!sass?sourceMap&includePaths[]=' + path.resolve(__dirname, './node_modules/compass-mixins/lib'), {publicPath: '../'})
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'url?limit=10000&name=images/[name].[ext]',
+      },
+      {
+        test: /\.(otf)$/i,
+        loader: 'url?limit=10000&name=fonts/[name].[ext]',
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=10000&minetype=application/font-woff',
+      },
+      {
+        test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader',
+      },
+      {
+        test: /\.s?html$/,
+        loader: "ngtemplate?relativeTo=" + src_path + "/!html",
+      },
+    ],
+  },
+  plugins: [
+    new ExtractTextPlugin('css/[name].css'),
+    new webpack.DefinePlugin({
+      NODE_ENV: JSON.stringify(NODE_ENV)
+    }),
+  ],
   postcss: function () {
-      return [precss, autoprefixer];
-    },
+    return [precss, autoprefixer];
+  },
   resolve: {
-      root: [node_modules_dir],
-    },
+    root: [node_modules_dir],
+  },
   resolveLoader: {root: [node_modules_dir]}
 };
 

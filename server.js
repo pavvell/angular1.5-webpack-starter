@@ -12,7 +12,6 @@ const port = isDeveloping ? 3001 : process.env.PORT;
 const app = express();
 
 if (isDeveloping) {
-  console.log('develop mode...');
   const compiler = webpack(config);
   const middleware = webpackMiddleware(compiler, {
     publicPath: config.output.publicPath,
@@ -31,6 +30,7 @@ if (isDeveloping) {
   app.use(express.static(__dirname + '/frontend/build'));
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
+
   app.get('*', function response(req, res) {
     res.write(fs.readFileSync(path.join(__dirname, 'public/index.html')));
     res.end();
